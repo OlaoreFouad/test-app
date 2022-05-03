@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/start_dest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/start_destination"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stops_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:itemCount="10"
+        tools:listitem="@layout/item_stop"
+        android:paddingVertical="10dp"
+        app:layout_constraintBottom_toTopOf="@id/end_dest"
+        app:layout_constraintTop_toBottomOf="@id/start_dest" />
+
+    <EditText
+        android:id="@+id/end_dest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/end_destination"
+        app:layout_constraintBottom_toTopOf="@id/add_stop" />
+
+    <Button
+        android:id="@+id/add_stop"
+        android:layout_width="match_parent"
+        android:text="@string/add_stop"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
