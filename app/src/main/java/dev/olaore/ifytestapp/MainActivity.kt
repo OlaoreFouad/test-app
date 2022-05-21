@@ -2,51 +2,42 @@ package dev.olaore.ifytestapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dev.olaore.ifytestapp.databinding.ActivityMainBinding
+import java.lang.Exception
+import java.lang.NullPointerException
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val stops: MutableList<Stop> = mutableListOf()
 
     private lateinit var stopsAdapter: StopListAdapter
 
+    private val viewModel: MainViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(binding.root)
 
-        binding.setupUi()
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        binding.submit.setOnClickListener { onSubmit() }
     }
 
-    private fun ActivityMainBinding.setupUi() {
-        stopsAdapter = StopListAdapter {  position ->
-            onItemRemoved(position)
+    private fun onSubmit() {
+        val submitResponse = viewModel.submit()
+
+        if (!submitResponse) {
+            Toast.makeText(
+                this, "Please fucking enter at least one name!",
+                Toast.LENGTH_LONG).show()
         }
-        stopsList.apply {
-            layoutManager = LinearLayoutManager(applicationContext)
-            adapter = stopsAdapter
-        }
-        addStop.setOnClickListener { addStop() }
+
     }
 
-    private fun addStop() {
-        val stopSize = stops.size
-        stops.add(Stop("Stop ${stopSize + 1}"))
-        stopsAdapter.submitList(stops.toList())
-    }
-
-    private fun removeStop(index: Int) {
-        stops.removeAt(index)
-        stopsAdapter.submitList(stops.toList())
-    }
-
-    private fun onItemRemoved(index: Int) {
-        Toast.makeText(this, "Item at index: $index removed!", Toast.LENGTH_LONG).show()
-        this.removeStop(index)
-    }
 }
